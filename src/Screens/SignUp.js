@@ -6,6 +6,7 @@ import MyButton from '../components/MyButton';
 import {colors} from '../utils.js/colors';
 import {useNavigation} from '@react-navigation/native';
 import {ScrollView} from 'react-native-gesture-handler';
+import auth from '@react-native-firebase/auth';
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -13,14 +14,14 @@ const SignUp = () => {
   const [badName, setBadName] = useState(false);
   const [badEmail, setBademail] = useState(false);
   const [badPassword, setBadpassword] = useState(false);
-  const[badConfirmPassword,setbadConfirmPassword]=useState(false)
+  const [badConfirmPassword, setbadConfirmPassword] = useState(false);
   const [badNumber, setBadNumber] = useState(false);
 
   const [creuser, setCreUser] = useState({
     name: '',
     email: '',
     password: '',
-    confirmpassword:'',
+    confirmpassword: '',
     phonenumber: '',
   });
 
@@ -30,37 +31,61 @@ const SignUp = () => {
 
   const handleSignUp = () => {
     console.log(creuser);
-    if (creuser.name == '') {
-      setBadName(true);
-    } else {
-      setBadName(false);
-    }
-    if (creuser.email == '') {
-      setBademail(true);
-    } else {
-      setBademail(false);
-    }
 
-    if (creuser.password == '') {
-      setBadpassword(true);
-    } else {
-      setBadpassword(false);
-    }
-    if(creuser.confirmpassword==''){
-        setbadConfirmPassword(true)
-    }else if(creuser.confirmpassword!==creuser.password){
-        setbadConfirmPassword(true)
-    }else{
-        setbadConfirmPassword(false)
-    }
+    if (creuser.email == '' || creuser.password == '') {
+      if (creuser.name == '') {
+        setBadName(true);
+      } else {
+        setBadName(false);
+      }
+      if (creuser.email == '') {
+        setBademail(true);
+      } else {
+        setBademail(false);
+      }
 
+      if (creuser.password == '') {
+        setBadpassword(true);
+      } else {
+        setBadpassword(false);
+      }
+      if (creuser.confirmpassword == '') {
+        setbadConfirmPassword(true);
+      } else if (creuser.confirmpassword !== creuser.password) {
+        setbadConfirmPassword(true);
+      } else {
+        setbadConfirmPassword(false);
+      }
 
-    if (creuser.phonenumber == '') {
-      setBadNumber(true);
+      if (creuser.phonenumber == '') {
+        setBadNumber(true);
+      } else {
+        setBadNumber(false);
+      }
     } else {
-      setBadNumber(false);
+      auth()
+        .createUserWithEmailAndPassword(creuser.email, creuser.password)
+        .then(userCredential => {
+          // Kullanıcı başarıyla oluşturuldu
+          console.log('Kullanıcı oluşturuldu:', userCredential.user);
+          setCreUser({
+            name: '',
+            email: '',
+            password: '',
+            confirmpassword: '',
+            phonenumber: '',
+          })
+
+          navigation.navigate('Login')
+          
+        })
+        .catch(error => {
+          // Hata durumunda işlemler
+          console.log('Hata:', error.code, error.message);
+        });
     }
   };
+
   return (
     <SafeAreaView style={styles.main}>
       <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
@@ -71,6 +96,7 @@ const SignUp = () => {
           />
           <Text style={styles.text}> Create New Account</Text>
           <MyTextInput
+          value={creuser.name}
             onChangeText={text => onChangeText('name', text)}
             placeholder="Enter User Name"
             iconname="person"
@@ -83,6 +109,7 @@ const SignUp = () => {
             </Text>
           )}
           <MyTextInput
+          value={creuser.email}
             onChangeText={text => onChangeText('email', text)}
             placeholder="Enter Email"
             iconname="mail"
@@ -95,6 +122,7 @@ const SignUp = () => {
             </Text>
           )}
           <MyTextInput
+          value={creuser.password}
             onChangeText={text => onChangeText('password', text)}
             placeholder="Enter Password"
             iconname="lock-closed"
@@ -107,7 +135,8 @@ const SignUp = () => {
               Please Enter Password{' '}
             </Text>
           )}
-             <MyTextInput
+          <MyTextInput
+          value={creuser.confirmpassword}
             onChangeText={text => onChangeText('confirmpassword', text)}
             placeholder="Confirm Password"
             iconname="lock-closed"
@@ -121,6 +150,7 @@ const SignUp = () => {
             </Text>
           )}
           <MyTextInput
+          value={creuser.phonenumber}
             onChangeText={text => onChangeText('phonenumber', text)}
             placeholder="Enter Phone Number"
             iconname="call"

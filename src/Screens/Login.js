@@ -5,6 +5,7 @@ import MyTextInput from '../components/MyTextInput';
 import MyButton from '../components/MyButton';
 import { colors } from '../utils.js/colors';
 import { useNavigation } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
 
 const Login = () => {
 
@@ -26,6 +27,7 @@ setLogUser({...loguser,[key]:value})
 
 const handleLogin=()=>{
   console.log('merhaba')
+if(loguser.email=='' || loguser.password==''){
   if(loguser.email==''){
     setBademail(true)
   }else{
@@ -37,6 +39,31 @@ if(loguser.password==''){
 }else{
   setBadpassword(false)
 }
+}else{
+  auth()
+  .signInWithEmailAndPassword(loguser.email, loguser.password)
+  .then((userCredential) => {
+    // Kullanıcı başarıyla giriş yaptı
+    console.log('Kullanıcı giriş yaptı:', userCredential.user);
+    setLogUser({
+
+      email: '',
+      password: '',
+      
+    })
+
+    setBademail(false)
+    setBadpassword(false)
+
+    navigation.navigate('Login')
+  })
+  .catch((error) => {
+    // Hata durumunda işlemler
+    console.log('Hata:', error.code, error.message);
+  });
+}
+
+
 
 }
 
@@ -48,12 +75,19 @@ if(loguser.password==''){
         <Image style={styles.image} source={require('../assets/FCoder.png')} />
         <Text style={styles.text}> Login</Text>
 
-        <MyTextInput onChangeText={(text)=>onChangeText('email',text)} placeholder="Enter Email" iconname="mail" iconsize={25} />
+        <MyTextInput
+        
+        
+        
+        value={loguser.email}
+        
+        onChangeText={(text)=>onChangeText('email',text)} placeholder="Enter Email" iconname="mail" iconsize={25} />
 
 
         {badEmail===true &&(<Text style={{marginTop:10,marginLeft:30,color:'red'}}>Please Enter Email </Text>)}
 
         <MyTextInput
+          value={loguser.password}
         onChangeText={(text)=>onChangeText('password',text)}
           placeholder="Enter Password"
           iconname="lock-closed"
