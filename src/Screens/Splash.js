@@ -3,18 +3,34 @@ import {View, Text, Image,Button} from 'react-native';
 
 
 
-import React, {useEffect} from 'react';
+import React, {useEffect,useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Login from './Login';
 const Splash = () => {
 const navigation = useNavigation();
+useEffect(() => {
+  const unsubscribe = auth().onAuthStateChanged(user => {
+    if (user) {
+      console.log('Kullanıcı oturum açtı:', user.email);
+    setTimeout(()=>{
+      navigation.navigate('Home')
+    },3000)
+    } else {
+      console.log('Kullanıcı oturum açmadı.');
+    
+      setTimeout(()=>{
+        navigation.navigate('Login')
+      },3000)
+    }
+  });
 
-  useEffect(() => {
-    setTimeout(() => {
-      navigation.navigate('Login');
-    }, 9000);
-  }, []);
+  return () => unsubscribe();
+}, []);
+
+
 
   return (
     <SafeAreaView style={{flex:1}}>

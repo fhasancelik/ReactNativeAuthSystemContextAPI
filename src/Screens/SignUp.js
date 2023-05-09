@@ -1,5 +1,5 @@
 import {View, Text, StyleSheet, Image, TextInput} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import MyTextInput from '../components/MyTextInput';
 import MyButton from '../components/MyButton';
@@ -7,6 +7,9 @@ import {colors} from '../utils.js/colors';
 import {useNavigation} from '@react-navigation/native';
 import {ScrollView} from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../components/Loader';
+
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -16,6 +19,8 @@ const SignUp = () => {
   const [badPassword, setBadpassword] = useState(false);
   const [badConfirmPassword, setbadConfirmPassword] = useState(false);
   const [badNumber, setBadNumber] = useState(false);
+  const[comptSignup,setcomptSignup]=useState(false)
+  const [modalVisible, setModalVisible] = useState(false);
 
   const [creuser, setCreUser] = useState({
     name: '',
@@ -28,6 +33,35 @@ const SignUp = () => {
   const onChangeText = (key, value) => {
     setCreUser({...creuser, [key]: value});
   };
+
+
+  const storeData = async value => {
+    try {
+      const creuser = JSON.stringify(value);
+      await AsyncStorage.setItem('user', creuser);
+    } catch (e) {
+      // saving error
+    }
+  };
+
+
+
+  useEffect(() => {
+    const unsubscribe = auth().onAuthStateChanged(user => {
+      if (user) {
+        console.log('Kullanıcı oturum açtı:', user.email);
+        setModalVisible(false)
+        navigation.navigate('Home')
+      } else {
+        console.log('Kullanıcı oturum açmadı.');
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+
+
 
   const handleSignUp = () => {
     console.log(creuser);
@@ -63,25 +97,33 @@ const SignUp = () => {
         setBadNumber(false);
       }
     } else {
+
+      setModalVisible(true)
+
       auth()
         .createUserWithEmailAndPassword(creuser.email, creuser.password)
         .then(userCredential => {
           // Kullanıcı başarıyla oluşturuldu
           console.log('Kullanıcı oluşturuldu:', userCredential.user);
+
+          storeData(creuser);
+        
+
           setCreUser({
             name: '',
             email: '',
             password: '',
             confirmpassword: '',
             phonenumber: '',
-          })
+          });
 
-          navigation.navigate('Login')
-          
+      
         })
         .catch(error => {
           // Hata durumunda işlemler
           console.log('Hata:', error.code, error.message);
+          setModalVisible(false)
+          Alert.alert('Try Again')
         });
     }
   };
@@ -96,7 +138,7 @@ const SignUp = () => {
           />
           <Text style={styles.text}> Create New Account</Text>
           <MyTextInput
-          value={creuser.name}
+            value={creuser.name}
             onChangeText={text => onChangeText('name', text)}
             placeholder="Enter User Name"
             iconname="person"
@@ -109,7 +151,7 @@ const SignUp = () => {
             </Text>
           )}
           <MyTextInput
-          value={creuser.email}
+            value={creuser.email}
             onChangeText={text => onChangeText('email', text)}
             placeholder="Enter Email"
             iconname="mail"
@@ -122,7 +164,7 @@ const SignUp = () => {
             </Text>
           )}
           <MyTextInput
-          value={creuser.password}
+            value={creuser.password}
             onChangeText={text => onChangeText('password', text)}
             placeholder="Enter Password"
             iconname="lock-closed"
@@ -136,7 +178,7 @@ const SignUp = () => {
             </Text>
           )}
           <MyTextInput
-          value={creuser.confirmpassword}
+            value={creuser.confirmpassword}
             onChangeText={text => onChangeText('confirmpassword', text)}
             placeholder="Confirm Password"
             iconname="lock-closed"
@@ -150,7 +192,7 @@ const SignUp = () => {
             </Text>
           )}
           <MyTextInput
-          value={creuser.phonenumber}
+            value={creuser.phonenumber}
             onChangeText={text => onChangeText('phonenumber', text)}
             placeholder="Enter Phone Number"
             iconname="call"
@@ -164,12 +206,27 @@ const SignUp = () => {
               Please Enter Phone Number{' '}
             </Text>
           )}
+
+
+<Loader modalVisible={modalVisible} setModalVisible={setModalVisible} />
+
+
+
           <MyButton
             onPress={() => handleSignUp()}
             title={'Sign Up'}
             bgColor={colors.black}
             textColor={colors.white}
           />
+
+
+<MyButton
+            onPress={() => getData()}
+            title={'Sign Up'}
+            bgColor={colors.black}
+            textColor={colors.white}
+          />
+
           <Text onPress={() => navigation.goBack()} style={styles.textbold}>
             Already Have Account ? Login{' '}
           </Text>
