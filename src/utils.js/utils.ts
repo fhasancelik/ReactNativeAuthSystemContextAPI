@@ -6,6 +6,9 @@ import axios from 'axios';
 export const axiosInstance = axios.create({
     baseURL: 'https://dummyjson.com/',
   });
+  export const axiosInstanceLocal = axios.create({
+    baseURL: 'http://localhost:3000/',
+  });
   
   export interface ProductProps {
     id: number;

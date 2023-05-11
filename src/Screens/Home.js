@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import MyButton from '../components/MyButton';
 import {useNavigation} from '@react-navigation/native';
@@ -13,11 +13,14 @@ import Search from '../bottom/Search';
 import Cart from '../bottom/Cart';
 import WishList from '../bottom/WishList';
 import Profile from '../bottom/Profile';
+import { ProductsContext } from '../context/ProductsProvider';
 import { ProductsProvider } from '../context/ProductsProvider';
 const Home = () => {
   const navigation = useNavigation();
 
-  const [selectedTab,setSelectedTab]=useState(0)
+
+  const {cart,setCart,wish,setSelectedTab,selectedTab}=useContext(ProductsContext)
+  
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(user => {
@@ -33,7 +36,7 @@ const Home = () => {
   }, []);
 
   return (
-  <ProductsProvider>
+ 
       <SafeAreaView style={{flex: 1}}>
 
 <View style={{flex:1}}>
@@ -65,6 +68,33 @@ onPress={()=>setSelectedTab(2)}
               justifyContent:'center'
             }}>
                        <Icon name="basket-outline" color={colors.white} size={25} />
+
+<View
+style={{
+  width:20,
+  height:20,
+  backgroundColor:colors.red,
+  borderRadius:10,
+  justifyContent:'center',
+  alignItems:'center',
+  position:'absolute',
+  top:1,right:2
+
+}}
+
+
+>
+  <Text>{cart.length}</Text>
+
+</View>
+
+ 
+
+
+
+
+
+
             </TouchableOpacity>
         </View>
 
@@ -73,6 +103,24 @@ onPress={()=>setSelectedTab(2)}
         onPress={()=>setSelectedTab(3)}
         style={styles.bottomtabitems}>
           <Icon name="heart-outline" size={25} color={selectedTab==3?colors.black:'gray'} />
+          <View
+style={{
+  width:20,
+  height:20,
+  backgroundColor:colors.red,
+  borderRadius:10,
+  justifyContent:'center',
+  alignItems:'center',
+  position:'absolute',
+  top:10,right:-9
+
+}}
+
+
+>
+  <Text>{wish.length}</Text>
+
+</View>
         </TouchableOpacity>
 
         <TouchableOpacity 
@@ -83,7 +131,7 @@ onPress={()=>setSelectedTab(2)}
         </TouchableOpacity>
       </View>
     </SafeAreaView>
-  </ProductsProvider>
+ 
   );
 };
 

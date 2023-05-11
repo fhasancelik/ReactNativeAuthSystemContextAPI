@@ -1,17 +1,11 @@
-import { Image, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
-import React,{useContext, useState} from 'react'
+import { Image,StyleSheet, Text, View ,TouchableOpacity} from 'react-native'
+import React, { useContext } from 'react'
 import { colors } from '../utils.js/colors'
-import Icon from 'react-native-vector-icons/Ionicons'
-import axios from 'axios'
+import Icon from 'react-native-vector-icons'
 import { ProductsContext } from '../context/ProductsProvider'
+const MyCartItem = ({item,wish}) => {
 
-const MyProductItem = ({item}) => {
-
-    const[heart,setHeart]=useState(false)
-
-
-const{addCart,addWish,wish}=useContext(ProductsContext)
-
+    const {addCart,addWish}=useContext(ProductsContext)
   return (
     <TouchableOpacity onPress={()=>console.log('card')} style={{
         width:200,
@@ -93,6 +87,6 @@ justifyContent:'center'
   )
 }
 
-export default MyProductItem
+export default MyCartItem
 
 const styles = StyleSheet.create({})
