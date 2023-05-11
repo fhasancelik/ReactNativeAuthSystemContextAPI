@@ -9,11 +9,13 @@ import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Login from './Login';
+import fetchProducts from '../services/getProduct';
 const Splash = () => {
 const navigation = useNavigation();
 useEffect(() => {
   const unsubscribe = auth().onAuthStateChanged(user => {
     if (user) {
+      fetchProducts()
       console.log('Kullanıcı oturum açtı:', user.email);
     setTimeout(()=>{
       navigation.navigate('Home')

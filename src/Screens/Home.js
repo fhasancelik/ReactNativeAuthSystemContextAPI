@@ -13,6 +13,7 @@ import Search from '../bottom/Search';
 import Cart from '../bottom/Cart';
 import WishList from '../bottom/WishList';
 import Profile from '../bottom/Profile';
+import { ProductsProvider } from '../context/ProductsProvider';
 const Home = () => {
   const navigation = useNavigation();
 
@@ -32,7 +33,8 @@ const Home = () => {
   }, []);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+  <ProductsProvider>
+      <SafeAreaView style={{flex: 1}}>
 
 <View style={{flex:1}}>
 {selectedTab==0?(<Main/>):selectedTab==1?(<Search/>):selectedTab==2?(<Cart/>):selectedTab==3?(<WishList/>):selectedTab==4?(<Profile/>):null}
@@ -81,6 +83,7 @@ onPress={()=>setSelectedTab(2)}
         </TouchableOpacity>
       </View>
     </SafeAreaView>
+  </ProductsProvider>
   );
 };
 
