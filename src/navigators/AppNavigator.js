@@ -7,6 +7,8 @@ import Login from '../Screens/Login'
 import SignUp from '../Screens/SignUp'
 import Home from '../Screens/Home'
 import { ProductsProvider } from '../context/ProductsProvider'
+import MyAddress from '../Screens/MyAddress'
+import AddAddress from '../Screens/AddAddress'
 
 const Stack =createStackNavigator()
 const AppNavigator = () => {
@@ -14,10 +16,12 @@ const AppNavigator = () => {
 <ProductsProvider>
 <NavigationContainer>
     <Stack.Navigator>
-         {/* <Stack.Screen options={{headerShown:false}} name='Splash' component={Splash}/>  
+           <Stack.Screen options={{headerShown:false}} name='Splash' component={Splash}/>  
         <Stack.Screen options={{headerShown:false}} name='Login' component={Login}/>
-        <Stack.Screen name='SignUp' component={SignUp} options={{headerShown:false}} />   */}
-        <Stack.Screen name='Home' component={Home} options={{headerShown:false}} />
+        <Stack.Screen name='SignUp' component={SignUp} options={{headerShown:false}} />   
+        <Stack.Screen name='Home' component={Home} options={{headerShown:false}} />  
+         <Stack.Screen name='AddAddress' component={AddAddress} options={{headerShown:false}} />
+        <Stack.Screen name='MyAddress' component={MyAddress} options={{headerShown:false}} />
     </Stack.Navigator>
    </NavigationContainer>
 </ProductsProvider>

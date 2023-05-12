@@ -7,22 +7,29 @@ import {axiosInstanceLocal} from '../utils.js/utils';
 import MyCartItem from '../components/MyCartItem';
 import {FlatList} from 'react-native-gesture-handler';
 import {colors} from '../utils.js/colors';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import MyButton from '../components/MyButton';
 
 const Cart = () => {
-  const {cart, setCart, wish, addWish,deleteCartItem,setSelectedTab} = useContext(ProductsContext);
+  const {cart, setCart, wish, addWish, deleteCartItem, setSelectedTab} =
+    useContext(ProductsContext);
 
-const navigation=useNavigation()
+  const navigation = useNavigation();
   return (
-    <View style={{marginBottom: 60}}>
+    <View style={{flex: 1, marginBottom: 60}}>
       <FlatList
-      ListEmptyComponent={<TouchableOpacity
-      
-      
-      onPress={()=>setSelectedTab(0)}
-      >
-        <Text>Go To Products</Text>
-      </TouchableOpacity>}
+        ListEmptyComponent={
+          <TouchableOpacity
+            style={{
+             marginTop:300,
+              justifyContent: 'center',
+              alignItems: 'center',
+            
+            }}
+            onPress={() => setSelectedTab(0)}>
+            <Text>Go To Products</Text>
+          </TouchableOpacity>
+        }
         data={cart}
         renderItem={({item}) => {
           return (
@@ -71,9 +78,7 @@ const navigation=useNavigation()
                   {item.price} $
                 </Text>
                 <TouchableOpacity
-                  onPress={() =>
-              deleteCartItem(item.id)
-                  }
+                  onPress={() => deleteCartItem(item.id)}
                   style={{
                     borderWidth: 1,
                     borderRadius: 10,
@@ -130,6 +135,17 @@ const navigation=useNavigation()
           );
         }}
       />
+      <MyButton
+      
+      onPress={()=>console.log('slem')}
+      
+      
+      title={'Checkout'} bgColor={'green'} textColor={colors.white
+      }
+      
+      style={{
+        marginBottom:20
+      }}/>
     </View>
   );
 };

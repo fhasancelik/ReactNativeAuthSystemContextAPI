@@ -18,12 +18,15 @@ const navigation=useNavigation()
       <FlatList
       ListEmptyComponent={<TouchableOpacity
       
-      
+      style={{   marginTop:300,
+        justifyContent: 'center',
+        alignItems: 'center',}}
       onPress={()=>setSelectedTab(0)}
       >
         <Text>Go To Products</Text>
       </TouchableOpacity>}
         data={wish}
+        
         renderItem={({item}) => {
           return (
             <TouchableOpacity

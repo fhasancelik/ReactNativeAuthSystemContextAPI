@@ -30,6 +30,17 @@ const SignUp = () => {
     phonenumber: '',
   });
 
+  const getDatas = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('user')
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch(e) {
+      // error reading value
+    }
+  }
+useEffect(()=>{
+  getDatas()
+},[])
   const onChangeText = (key, value) => {
     setCreUser({...creuser, [key]: value});
   };
@@ -221,7 +232,7 @@ const SignUp = () => {
 
 
 <MyButton
-            onPress={() => getData()}
+            onPress={() => getDatas()}
             title={'Sign Up'}
             bgColor={colors.black}
             textColor={colors.white}
