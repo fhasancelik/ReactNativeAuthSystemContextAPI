@@ -22,7 +22,6 @@ const ProductsProvider = ({children}) => {
     city: '',
     building: '',
     pin: '',
- 
   });
 
   const getUserData = async () => {
@@ -36,15 +35,11 @@ const ProductsProvider = ({children}) => {
       // error reading value
     }
   };
-  useEffect(() => {
-    getUserData();
-  }, []);
 
   const deleteCartItem = id => {
     axiosInstanceLocal.delete(`cart/${id}`);
     fetchCarts();
   };
-
 
   const deleteAddres = id => {
     axiosInstanceLocal.delete(`address/${id}`);
@@ -61,7 +56,6 @@ const ProductsProvider = ({children}) => {
       .catch(err => Alert.alert('Product already avaible in your basket'));
   };
 
-
   const addAddress = item => {
     axiosInstanceLocal
       .post('address', item)
@@ -72,7 +66,6 @@ const ProductsProvider = ({children}) => {
       .catch(err => Alert.alert('Product already avaible in your basket'));
   };
 
-
   const fetchAddress = () => {
     axiosInstanceLocal.get('address').then(response => {
       const {status, data} = response;
@@ -81,13 +74,6 @@ const ProductsProvider = ({children}) => {
       }
     });
   };
-
-  useEffect(()=>{
-
-fetchAddress()
-
-  },[])
-
 
   const deletewish = async productId => {
     try {
@@ -134,10 +120,6 @@ fetchAddress()
     });
   };
 
-  useEffect(() => {
-    fetchWish();
-  }, []);
-
   const fetchCarts = () => {
     axiosInstanceLocal.get('cart').then(response => {
       const {status, data} = response;
@@ -146,10 +128,6 @@ fetchAddress()
       }
     });
   };
-
-  useEffect(() => {
-    fetchCarts();
-  }, []);
 
   const [product, setProduct] = useState({
     title: '',
@@ -196,10 +174,6 @@ fetchAddress()
     }
   };
 
-  useEffect(() => {
-    fetchSmartphones();
-  }, []);
-
   const fetchLaptops = async () => {
     try {
       const response = await axiosInstance.get('products/category/laptops');
@@ -209,9 +183,24 @@ fetchAddress()
       throw error;
     }
   };
-  useEffect(()=>{
-    fetchAddress()
-  },[])
+
+  useEffect(() => {
+    fetchAddress();
+  }, []);
+
+  useEffect(() => {
+    fetchWish();
+  }, []);
+
+  useEffect(() => {
+    fetchCarts();
+  }, []);
+  useEffect(() => {
+    fetchSmartphones();
+  }, []);
+  useEffect(() => {
+    fetchAddress();
+  }, []);
 
   useEffect(() => {
     fetchLaptops();
@@ -223,6 +212,9 @@ fetchAddress()
 
   useEffect(() => {
     fetchcCategories();
+  }, []);
+  useEffect(() => {
+    getUserData();
   }, []);
 
   return (
@@ -249,8 +241,9 @@ fetchAddress()
         user,
         setUser,
         useraddres,
-        setUseraddres,addAddress,
-        deleteAddres
+        setUseraddres,
+        addAddress,
+        deleteAddres,
       }}>
       {children}
     </ProductsContext.Provider>
