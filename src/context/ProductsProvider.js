@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {axiosInstance} from '../utils.js/utils';
 import {axiosInstanceLocal} from '../utils.js/utils';
 import {Alert} from 'react-native';
-import axios from 'axios';
+
 
 const ProductsContext = createContext();
 
@@ -14,7 +14,7 @@ const ProductsProvider = ({children}) => {
   const [categories, setCategories] = useState([]);
   const [smartphones, setSmartphones] = useState([]);
   const [laptops, setLaptops] = useState([]);
-  const [selectedTab, setSelectedTab] = useState(4);
+  const [selectedTab, setSelectedTab] = useState(0);
 
   const [user, setUser] = useState({});
 
@@ -23,7 +23,6 @@ const ProductsProvider = ({children}) => {
     building: '',
     pin: '',
   });
-
   const getUserData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('user');
@@ -35,6 +34,7 @@ const ProductsProvider = ({children}) => {
       // error reading value
     }
   };
+
 
   const deleteCartItem = id => {
     axiosInstanceLocal.delete(`cart/${id}`);

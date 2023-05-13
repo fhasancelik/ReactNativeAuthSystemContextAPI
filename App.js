@@ -7,7 +7,7 @@ import {name as appName} from './app.json';
 import {initializeApp} from '@react-native-firebase/app';
 
 import { ProductsProvider } from './src/context/ProductsProvider';
-import fetchProducts from './src/services/getProduct';
+
 // const firebaseConfig = {
 
 //   apiKey: "AIzaSyCDMCiBX7NQB-uWjnvf49_WSZy3Afu7Qgg",

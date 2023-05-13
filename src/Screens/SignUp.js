@@ -231,12 +231,7 @@ useEffect(()=>{
           />
 
 
-<MyButton
-            onPress={() => getDatas()}
-            title={'Sign Up'}
-            bgColor={colors.black}
-            textColor={colors.white}
-          />
+
 
           <Text onPress={() => navigation.goBack()} style={styles.textbold}>
             Already Have Account ? Login{' '}

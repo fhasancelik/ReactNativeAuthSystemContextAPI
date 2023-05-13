@@ -2,9 +2,13 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import MyButton from '../components/MyButton';
 import {ProductsContext} from '../context/ProductsProvider';
 import {useNavigation} from '@react-navigation/native';
+import { colors } from '../utils.js/colors';
+
+
+colors
 const Profile = () => {
   const navigation = useNavigation();
 
@@ -98,6 +102,18 @@ const Profile = () => {
         }}>
         <Text style={{}}>Offers</Text>
       </TouchableOpacity>
+
+
+<MyButton
+            onPress={() =>{
+
+              auth().signOut()
+            }}
+            title={'Logout'}
+            bgColor={colors.black}
+            textColor={colors.white}
+          />
+
     </View>
   );
 };

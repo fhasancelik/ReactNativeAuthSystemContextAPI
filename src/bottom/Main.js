@@ -9,7 +9,7 @@ import {
 import React, {useContext, useEffect, useState} from 'react';
 import Header from '../components/Header';
 import {ProductsContext} from '../context/ProductsProvider';
-import fetchProducts from '../services/getProduct';
+
 import {axiosInstance} from '../utils.js/utils';
 import {colors} from '../utils.js/colors';
 import MyProductItem from '../components/MyProductItem';
