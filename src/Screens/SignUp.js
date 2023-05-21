@@ -1,5 +1,5 @@
 import {View, Text, StyleSheet, Image, TextInput} from 'react-native';
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect,useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import MyTextInput from '../components/MyTextInput';
 import MyButton from '../components/MyButton';
@@ -9,18 +9,30 @@ import {ScrollView} from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../components/Loader';
+import { ProductsContext } from '../context/ProductsProvider';
+
 
 
 const SignUp = () => {
+
   const navigation = useNavigation();
 
+  const {userAvaible,setuserAvaible,readData}=useContext(ProductsContext)
+
   const [badName, setBadName] = useState(false);
+
   const [badEmail, setBademail] = useState(false);
+
   const [badPassword, setBadpassword] = useState(false);
+
   const [badConfirmPassword, setbadConfirmPassword] = useState(false);
+
   const [badNumber, setBadNumber] = useState(false);
+
   const[comptSignup,setcomptSignup]=useState(false)
+  
   const [modalVisible, setModalVisible] = useState(false);
+
 
   const [creuser, setCreUser] = useState({
     name: '',
@@ -30,17 +42,8 @@ const SignUp = () => {
     phonenumber: '',
   });
 
-  const getDatas = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('user')
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch(e) {
-      // error reading value
-    }
-  }
-useEffect(()=>{
-  getDatas()
-},[])
+
+
   const onChangeText = (key, value) => {
     setCreUser({...creuser, [key]: value});
   };
@@ -49,7 +52,11 @@ useEffect(()=>{
   const storeData = async value => {
     try {
       const creuser = JSON.stringify(value);
-      await AsyncStorage.setItem('user', creuser);
+      await AsyncStorage.setItem('user', creuser)
+      readData()
+      setModalVisible(false)
+      setuserAvaible(true)
+
     } catch (e) {
       // saving error
     }
@@ -57,25 +64,11 @@ useEffect(()=>{
 
 
 
-  useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged(user => {
-      if (user) {
-        console.log('Kullanıcı oturum açtı:', user.email);
-        setModalVisible(false)
-        navigation.navigate('Home')
-      } else {
-        console.log('Kullanıcı oturum açmadı.');
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
 
 
 
   const handleSignUp = () => {
-    console.log(creuser);
+   // console.log(creuser);
 
     if (creuser.email == '' || creuser.password == '') {
       if (creuser.name == '') {
@@ -111,7 +104,7 @@ useEffect(()=>{
 
       setModalVisible(true)
 
-      auth()
+  auth()
         .createUserWithEmailAndPassword(creuser.email, creuser.password)
         .then(userCredential => {
           // Kullanıcı başarıyla oluşturuldu
@@ -136,6 +129,9 @@ useEffect(()=>{
           setModalVisible(false)
           Alert.alert('Try Again')
         });
+
+      
+      
     }
   };
 
@@ -233,7 +229,7 @@ useEffect(()=>{
 
 
 
-          <Text onPress={() => navigation.goBack()} style={styles.textbold}>
+          <Text onPress={() => navigation.navigate('Login')} style={styles.textbold}>
             Already Have Account ? Login{' '}
           </Text>
         </View>

@@ -3,34 +3,31 @@ import {View, Text, Image,Button} from 'react-native';
 
 
 
-import React, {useEffect,useState} from 'react';
+import React, {useContext, useEffect,useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Login from './Login';
+import {ProductsContext} from '../context/ProductsProvider'
 
 const Splash = () => {
 const navigation = useNavigation();
-useEffect(() => {
-  const unsubscribe = auth().onAuthStateChanged(user => {
-    if (user) {
-  
-      console.log('Kullanıcı oturum açtı:', user.email);
-    setTimeout(()=>{
-      navigation.navigate('Home')
-    },3000)
-    } else {
-      console.log('Kullanıcı oturum açmadı.');
-    
-      setTimeout(()=>{
-        navigation.navigate('Login')
-      },3000)
-    }
-  });
 
-  return () => unsubscribe();
-}, []);
+
+const {userAvaible,setuserAvaible}=useContext(ProductsContext)
+
+if(userAvaible==true ){
+  setTimeout(()=>{
+    navigation.navigate('Profile')
+  },3000)
+
+
+}else{
+  setTimeout(()=>{
+    navigation.navigate('SignUp')
+  },2000)
+}
 
 
 

@@ -5,14 +5,28 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MyButton from '../components/MyButton';
 import {ProductsContext} from '../context/ProductsProvider';
 import {useNavigation} from '@react-navigation/native';
-import { colors } from '../utils.js/colors';
+import {colors} from '../utils.js/colors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-colors
 const Profile = () => {
   const navigation = useNavigation();
 
-  const {user} = useContext(ProductsContext);
+  const {userAvaible, setuserAvaible, user,readData} = useContext(ProductsContext);
+
+console.log(user)
+
+
+  const clearData = async () => {
+    try {
+      await AsyncStorage.clear();
+      console.log('Veriler temizlendi.');
+      setuserAvaible(false);
+      readData()
+      auth().signOut()
+    } catch (error) {
+      console.log('Veriler temizlenemedi:', error);
+    }
+  };
   return (
     <View style={{flex: 1}}>
       <View
@@ -73,8 +87,8 @@ const Profile = () => {
           borderBottomColor: '#8e8e8e',
           justifyContent: 'center',
         }}
-        onPress={() => navigation.navigate('MyAddress')}>
-        <Text style={{}}>My Address</Text>
+        onPress={() => {}}>
+        <Text style={{}}>{user.email}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -87,7 +101,7 @@ const Profile = () => {
           borderBottomColor: '#8e8e8e',
           justifyContent: 'center',
         }}>
-        <Text style={{}}>My Orders</Text>
+        <Text style={{}}>{user.phonenumber}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -100,20 +114,17 @@ const Profile = () => {
           borderBottomColor: '#8e8e8e',
           justifyContent: 'center',
         }}>
-        <Text style={{}}>Offers</Text>
+        <Text style={{}}>{user.password}</Text>
       </TouchableOpacity>
 
-
-<MyButton
-            onPress={() =>{
-
-              auth().signOut()
-            }}
-            title={'Logout'}
-            bgColor={colors.black}
-            textColor={colors.white}
-          />
-
+      <MyButton
+        onPress={() => {
+         clearData()
+        }}
+        title={'Logout'}
+        bgColor={colors.black}
+        textColor={colors.white}
+      />
     </View>
   );
 };

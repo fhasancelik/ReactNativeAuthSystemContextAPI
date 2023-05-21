@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>519606646098-m4m47lq5fnlv9njdq90nc5aeo3cdsrav.apps.googleusercontent.com</string>
+	<string>630117269193-qe94t9usgl5halj0to86c10s887s42dn.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.519606646098-m4m47lq5fnlv9njdq90nc5aeo3cdsrav</string>
+	<string>com.googleusercontent.apps.630117269193-qe94t9usgl5halj0to86c10s887s42dn</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCZ2iwMKe9w2cWo-On2-tPEkl-MnJpKnf0</string>
+	<string>AIzaSyC3aSm597hREkCxmnlUP8onTR7pgtIsNKw</string>
 	<key>GCM_SENDER_ID</key>
-	<string>519606646098</string>
+	<string>630117269193</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>org.reactjs.native.example.ReactNativeECommerce</string>
 	<key>PROJECT_ID</key>
-	<string>ecommerce-57334</string>
+	<string>login-eeacd</string>
 	<key>STORAGE_BUCKET</key>
-	<string>ecommerce-57334.appspot.com</string>
+	<string>login-eeacd.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:519606646098:ios:5dcc61940a650fda91768b</string>
+	<string>1:630117269193:ios:badf5d87721303bccfd718</string>
 </dict>
 </plist>
